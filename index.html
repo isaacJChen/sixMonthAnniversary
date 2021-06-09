@@ -1,0 +1,79 @@
+<div>
+    <h2 id="score">Score: 0</h2>
+    <img src="https://cdn4.iconfinder.com/data/icons/groups-and-people-line/120/line_man-512.png" alt="player" id="player" style="position: absolute; left: 1%; top: 5%; width: 10%;">
+    <img src="https://images-na.ssl-images-amazon.com/images/I/61nlMXM0rWL._AC_SL1000_.jpg" alt="pupu" id="obstacle" style="width: 10%; position: absolute; top: 10%; display: none;">
+    <button onclick="jump()"  id="jumpButton" style="position: absolute; top: 50%; left: 0; width: 100%; height: 50%;">JUMP</button>
+
+    <div id="popup" style="z-index: 0;">
+        <div style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: #51e2f5;">
+            <div style="text-align: center; padding: 20%; z-index: -1;">
+                <H1 style="color: white; font-family: Georgia, Cambria, Cochin, Times, 'Times New Roman', serif;">
+                    Evil Pupu has locked away your half year anniversary gift! Defeat his Pupu Army by jumping over <span style="color: #ff0000">20</span> Pupu to get to the passcode!
+                </H1>
+                <H3 style="color: white; font-family: Georgia, Cambria, Cochin, Times, 'Times New Roman', serif;">
+                    (Flip your phone horizontal to play the game)
+                </H3>
+                <button onclick="startGame()" id="startButton" style="z-index: -2; width: 10%; height: 5%;">START</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const frames = 1000
+    function move(position) {
+        let screenWidth = screen.width;
+        let obstacle = document.getElementById("obstacle")
+        obstacle.style.position = "absolute"
+        obstacle.style.left = screenWidth - (position * screenWidth / frames) + "px"
+    }
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+
+    function jump() {
+        document.getElementById('jumpButton').disabled = true
+        let player = document.getElementById('player')
+        for (let i = 1; i <= 30; i++) {
+            setTimeout(() => {
+                player.style.top = 5 - i + "%"
+            }, 8 * i)
+        }
+        let airTime = 50
+        for (let i = 30; i >= 0; i--) {
+            setTimeout(() => {
+                player.style.top = 5 - i + "%"
+                if (i === 0) {
+                    document.getElementById('jumpButton').disabled = false
+                }
+            }, (30 + airTime + 30 - i) * 8)
+        }
+    }
+
+    function startGame() {
+        document.getElementById("popup").style.display = "none"
+        let timeElapsed = 500;
+        for (let rounds = 0; rounds < 20; rounds++) {
+            let difficulty = getRandomInt(2, 7)
+            for (let moveTimes = 0; moveTimes < frames; moveTimes++) {
+                timeElapsed += difficulty
+                setTimeout(() => {
+                    if (rounds === 0 && moveTimes === 0) {
+                        document.getElementById("obstacle").style.display = "block"
+                    }
+                    if (moveTimes === frames - 1) {
+                        document.getElementById("score").innerHTML = `Score: ${rounds + 1}`
+                    }
+
+                    move(moveTimes)
+                }, timeElapsed)
+            }
+        }
+    }
+
+
+</script>
