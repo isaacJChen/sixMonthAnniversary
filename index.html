@@ -1,14 +1,23 @@
 <div>
     <h2 id="score">Score: 0</h2>
-    <img src="https://cdn4.iconfinder.com/data/icons/groups-and-people-line/120/line_man-512.png" alt="player" id="player" style="position: absolute; left: 1%; top: 5%; width: 10%;">
+    <img src="./download.jpeg" alt="player" id="player" style="position: absolute; left: 1%; top: 5%; height: 14%;">
     <img src="https://images-na.ssl-images-amazon.com/images/I/61nlMXM0rWL._AC_SL1000_.jpg" alt="pupu" id="obstacle" style="width: 10%; position: absolute; top: 10%; display: none;">
     <button onclick="jump()"  id="jumpButton" style="position: absolute; top: 50%; left: 0; width: 100%; height: 50%;">JUMP</button>
+
+    <div id="lost" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-align: center; background-color: #51e2f5;">
+        <H1>You Lost</H1>
+        <button onclick="restart()">RESTART</button>
+    </div>
+
+    <div id="won" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-align: center; background-color: #51e2f5;">
+        <H1>You Won</H1>
+    </div>
 
     <div id="popup" style="z-index: 0;">
         <div style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; background-color: #51e2f5;">
             <div style="text-align: center; z-index: -1;">
                 <H1 style="color: white; font-family: Georgia, Cambria, Cochin, Times, 'Times New Roman', serif;">
-                    Evil Pupu has locked away your half year anniversary gift! Defeat his Pupu Army by jumping over <span style="color: #ff0000">20</span> Pupu to get to the passcode!
+                    Evil Pupu has locked away your half year anniversary gift! Defeat his Pupu Army by jumping over <span style="color: #ff0000">10</span> Pupu to get to the passcode!
                 </H1>
                 <H3 style="color: white; font-family: Georgia, Cambria, Cochin, Times, 'Times New Roman', serif;">
                     (Flip your phone horizontal to play the game)
@@ -22,6 +31,8 @@
 
 <script>
     const frames = 1000
+    let lost = false
+    let won = false
     function move(position) {
         let screenWidth = screen.width;
         let obstacle = document.getElementById("obstacle")
@@ -33,6 +44,10 @@
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+
+    function restart() {
+        location.reload();
     }
 
     function jump() {
@@ -54,10 +69,27 @@
         }
     }
 
+    async function collisionDetection() {
+        if (!won) {
+            let obstaclePosition = document.getElementById("obstacle").getBoundingClientRect()
+            let playerPosition = document.getElementById('player').getBoundingClientRect()
+            if (obstaclePosition.left < playerPosition.right && obstaclePosition.right > playerPosition.left) {
+                if (obstaclePosition.top < playerPosition.bottom) {
+                    document.getElementById('lost').style.display = "block"
+                    lost = true
+                }
+            }
+            setTimeout(() => collisionDetection(), 100);   
+        }
+
+    }
+
     function startGame() {
         document.getElementById("popup").style.display = "none"
         let timeElapsed = 500;
-        for (let rounds = 0; rounds < 20; rounds++) {
+        collisionDetection();
+        const totalRounds = 10
+        for (let rounds = 0; rounds < totalRounds; rounds++) {
             let difficulty = getRandomInt(2, 7)
             for (let moveTimes = 0; moveTimes < frames; moveTimes++) {
                 timeElapsed += difficulty
@@ -67,6 +99,10 @@
                     }
                     if (moveTimes === frames - 1) {
                         document.getElementById("score").innerHTML = `Score: ${rounds + 1}`
+                        if (rounds === totalRounds - 1 && !lost) {
+                            won = true
+                            document.getElementById('won').style.display = "block"
+                        }
                     }
 
                     move(moveTimes)
