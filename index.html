@@ -1,14 +1,25 @@
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<title>Hello, world!</title>
+</head>
+
 <div>
     <h2 id="score">Score: 0</h2>
     <img src="./swordLam.png" alt="player" id="player" style="position: absolute; left: 1%; top: 5%; height: 14%;">
     <img src="https://images-na.ssl-images-amazon.com/images/I/61nlMXM0rWL._AC_SL1000_.jpg" alt="pupu" id="obstacle" style="width: 10%; position: absolute; top: 10%; display: none;">
-    <button onclick="jump()"  id="jumpButton" style="position: absolute; top: 50%; left: 0; width: 100%; height: 50%;">JUMP</button>
+    <button onclick="jump()"  id="jumpButton" class="btn btn-primary" style="position: absolute; top: 50%; left: 0; width: 100%; height: 50%;">JUMP</button>
 
     <div id="lost" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-align: center; background-color: #51e2f5;">
         <H1 style="color: white; font-family: Georgia, Cambria, Cochin, Times, 'Times New Roman', serif;">
             You lost
         </H1>
-        <button onclick="restart()">RESTART</button>
+        <button class="btn btn-primary" onclick="restart()">RESTART</button>
     </div>
 
     <div id="won" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; text-align: center; background-color: #51e2f5;">
@@ -29,7 +40,7 @@
                 <H3 style="color: white; font-family: Georgia, Cambria, Cochin, Times, 'Times New Roman', serif;">
                     (Flip your phone horizontal to play the game)
                 </H3>
-                <button onclick="startGame()" id="startButton" style="z-index: -2; width: 10%; height: 5%;">START</button>
+                <button onclick="startGame()" id="startButton" class="btn btn-primary" style="z-index: -2; width: 10%; height: 5%;">START</button>
             </div>
         </div>
     </div>
